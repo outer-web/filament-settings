@@ -1,0 +1,39 @@
+{
+    "name": "outerweb/filament-settings",
+    "description": "This package adds a way to interact with outerweb/settings in Filament.",
+    "homepage": "https://github.com/outer-web/filament-settings",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Outerweb",
+            "email": "info@outerweb.be"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "filament/filament": "^3.2",
+        "laravel/framework": "^10.0",
+        "outerweb/settings": "^1.0",
+        "spatie/laravel-package-tools": "^1.16"
+    },
+    "autoload": {
+        "psr-4": {
+            "Outerweb\\FilamentSettings\\": "src/"
+        },
+        "files": [
+            "src\\Helpers\\helpers.php"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Outerweb\\FilamentSettings\\FilamentSettingsServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
