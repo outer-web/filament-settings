@@ -4,6 +4,7 @@ namespace Outerweb\FilamentSettings\Filament\Pages;
 
 use Closure;
 use Filament\Actions\Action;
+use Filament\Forms\Components\Field;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Concerns\HasUnsavedDataChangesAlert;
@@ -11,6 +12,7 @@ use Filament\Pages\Concerns\InteractsWithFormActions;
 use Filament\Pages\Page;
 use Filament\Support\Exceptions\Halt;
 use Filament\Support\Facades\FilamentView;
+use Illuminate\Support\Str;
 use Outerweb\Settings\Models\Setting;
 
 /**
@@ -88,7 +90,18 @@ class Settings extends Page
         try {
             $this->callHook('beforeValidate');
 
-            $data = collect($this->form->getState())->dot()->all();
+            $fields = collect($this->form->getFlatFields(true));
+            $fieldsWithNestedFields = $fields->filter(fn(Field $field) => count($field->getChildComponents()) > 0);
+
+            $fieldsWithNestedFields->each(function (Field $fieldWithNestedFields, string $fieldWithNestedFieldsKey) use (&$fields) {
+                $fields = $fields->reject(function (Field $field, string $fieldKey) use ($fieldWithNestedFields, $fieldWithNestedFieldsKey) {
+                    return Str::startsWith($fieldKey, $fieldWithNestedFieldsKey . '.');
+                });
+            });
+
+            $data = $fields->mapWithKeys(function (Field $field, string $fieldKey) {
+                return [$fieldKey => data_get($this->form->getState(), $fieldKey)];
+            })->toArray();
 
             $this->callHook('afterValidate');
 
