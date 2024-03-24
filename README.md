@@ -94,7 +94,43 @@ class FilamentPanelProvider extends PanelProvider
 }
 ```
 
-You can add as many setting pages as you want.
+You can add as many setting pages as you want. But when you do, make sure to override the `public static function getNavigationLabel() : string` method on your settings page. This is because multiple pages with the same navigation label will override each other in the Filament navigation.
+
+### Changing the navigation label
+
+You can change the navigation label by overriding the `getNavigationLabel` method:
+
+```php
+namespace App\Filament\Pages\Settings;
+
+use Outerweb\FilamentSettings\Filament\Pages\Settings as BaseSettings;
+
+class Settings extends BaseSettings
+{
+    public static function getNavigationLabel(): string
+    {
+        return 'Custom label';
+    }
+}
+```
+
+### Changing the page title
+
+You can change the page title by overriding the `getTitle` method:
+
+```php
+namespace App\Filament\Pages\Settings;
+
+use Outerweb\FilamentSettings\Filament\Pages\Settings as BaseSettings;
+
+class Settings extends BaseSettings
+{
+    public function getTitle(): string
+    {
+        return 'Custom title';
+    }
+}
+```
 
 ## Changelog
 
