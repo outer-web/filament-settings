@@ -27,39 +27,39 @@ class Settings extends Page
 
     protected static ?string $navigationIcon = 'heroicon-o-cog';
 
-    public static function getNavigationLabel(): string
+    public static function getNavigationLabel() : string
     {
         return __('filament-settings::translations.page.navigation_label');
     }
 
-    public function getLayout(): string
+    public function getLayout() : string
     {
         return static::$layout ?? 'filament-panels::components.layout.index';
     }
 
-    public function getView(): string
+    public function getView() : string
     {
         return static::$view ?? 'filament-settings::filament/pages/settings';
     }
 
-    public function getTitle(): string
+    public function getTitle() : string
     {
         return __('filament-settings::translations.page.title');
     }
 
-    public function schema(): array|Closure
+    public function schema() : array|Closure
     {
         return [];
     }
 
-    public function form(Form $form): Form
+    public function form(Form $form) : Form
     {
         return $form
             ->schema($this->schema())
             ->statePath('data');
     }
 
-    public function getFormActions(): array
+    public function getFormActions() : array
     {
         return [
             Action::make('save')
@@ -69,12 +69,12 @@ class Settings extends Page
         ];
     }
 
-    public function mount(): void
+    public function mount() : void
     {
         $this->fillForm();
     }
 
-    protected function fillForm(): void
+    protected function fillForm() : void
     {
         $data = Setting::get();
 
@@ -85,13 +85,13 @@ class Settings extends Page
         $this->callHook('afterFill');
     }
 
-    public function save(): void
+    public function save() : void
     {
         try {
             $this->callHook('beforeValidate');
 
             $fields = collect($this->form->getFlatFields(true));
-            $fieldsWithNestedFields = $fields->filter(fn(Field $field) => count($field->getChildComponents()) > 0);
+            $fieldsWithNestedFields = $fields->filter(fn (Field $field) => count($field->getChildComponents()) > 0);
 
             $fieldsWithNestedFields->each(function (Field $fieldWithNestedFields, string $fieldWithNestedFieldsKey) use (&$fields) {
                 $fields = $fields->reject(function (Field $field, string $fieldKey) use ($fieldWithNestedFields, $fieldWithNestedFieldsKey) {
@@ -123,7 +123,7 @@ class Settings extends Page
         }
     }
 
-    protected function getSavedNotification(): ?Notification
+    protected function getSavedNotification() : ?Notification
     {
         $title = $this->getSavedNotificationTitle();
 
@@ -136,12 +136,12 @@ class Settings extends Page
             ->title($this->getSavedNotificationTitle());
     }
 
-    protected function getSavedNotificationTitle(): ?string
+    protected function getSavedNotificationTitle() : ?string
     {
         return __('filament-settings::translations.notifications.saved');
     }
 
-    protected function getRedirectUrl(): ?string
+    protected function getRedirectUrl() : ?string
     {
         return null;
     }

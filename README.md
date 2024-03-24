@@ -18,7 +18,7 @@ Configure the Outerweb/Settings package as described in the [Settings documentat
 Add the plugin to your desired Filament panel:
 
 ```php
-use OuterWeb\FilamentSettings\Filament\FilamentSettings;
+use Outerweb\FilamentSettings\Filament\Plugins\FilamentSettingsPlugin;
 
 class FilamentPanelProvider extends PanelProvider
 {
@@ -76,7 +76,7 @@ class Settings extends BaseSettings
 Register the setting page in the FilamentServiceProvider:
 
 ```php
-use OuterWeb\FilamentSettings\Filament\FilamentSettings;
+use Outerweb\FilamentSettings\Filament\Plugins\FilamentSettingsPlugin;
 
 class FilamentPanelProvider extends PanelProvider
 {
