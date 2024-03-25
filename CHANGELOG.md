@@ -2,6 +2,12 @@
 
 All notable changes to `filament-settings` will be documented in this file.
 
+## 1.2.0 - 2024-03-25
+
+### Changed
+
+- Set the static string `$view` instead of overriding the `getView` method in the base Settings page.
+
 ## 1.1.1 - 2024-03-12
 
 ### Added

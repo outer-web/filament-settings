@@ -27,6 +27,8 @@ class Settings extends Page
 
     protected static ?string $navigationIcon = 'heroicon-o-cog';
 
+    protected static string $view = 'filament-settings::filament/pages/settings';
+
     public static function getNavigationLabel() : string
     {
         return __('filament-settings::translations.page.navigation_label');
@@ -35,11 +37,6 @@ class Settings extends Page
     public function getLayout() : string
     {
         return static::$layout ?? 'filament-panels::components.layout.index';
-    }
-
-    public function getView() : string
-    {
-        return static::$view ?? 'filament-settings::filament/pages/settings';
     }
 
     public function getTitle() : string
