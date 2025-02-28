@@ -87,18 +87,7 @@ class Settings extends Page
         try {
             $this->callHook('beforeValidate');
 
-            $fields = collect($this->form->getFlatFields(true));
-            $fieldsWithNestedFields = $fields->filter(fn (Field $field) => count($field->getChildComponents()) > 0);
-
-            $fieldsWithNestedFields->each(function (Field $fieldWithNestedFields, string $fieldWithNestedFieldsKey) use (&$fields) {
-                $fields = $fields->reject(function (Field $field, string $fieldKey) use ($fieldWithNestedFields, $fieldWithNestedFieldsKey) {
-                    return Str::startsWith($fieldKey, $fieldWithNestedFieldsKey . '.');
-                });
-            });
-
-            $data = $fields->mapWithKeys(function (Field $field, string $fieldKey) {
-                return [$fieldKey => data_get($this->form->getState(), $fieldKey)];
-            })->toArray();
+            $data = Arr::dot($this->form->getState());
 
             $this->callHook('afterValidate');
 
