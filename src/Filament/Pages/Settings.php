@@ -15,6 +15,8 @@ use Filament\Support\Facades\FilamentView;
 use Illuminate\Support\Str;
 use Outerweb\Settings\Models\Setting;
 
+use function Filament\Support\is_app_url;
+
 /**
  * @property Form $form
  */
