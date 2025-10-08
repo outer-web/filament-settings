@@ -1,9 +1,9 @@
-name: "Fix PHP Code Styling"
+name: Fix PHP code style issues
 
 on:
   push:
     paths:
-      - '**.php'
+      - "**.php"
 
 permissions:
   contents: write
@@ -11,10 +11,11 @@ permissions:
 jobs:
   php-code-styling:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ github.head_ref }}
 

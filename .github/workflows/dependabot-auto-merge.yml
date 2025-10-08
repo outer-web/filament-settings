@@ -1,5 +1,4 @@
-name: "Dependabot Auto-Merge"
-
+name: dependabot-auto-merge
 on: pull_request_target
 
 permissions:
@@ -9,9 +8,9 @@ permissions:
 jobs:
   dependabot:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     if: ${{ github.actor == 'dependabot[bot]' }}
     steps:
-
       - name: Dependabot metadata
         id: metadata
         uses: dependabot/fetch-metadata@v2.4.0
