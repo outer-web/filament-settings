@@ -2,6 +2,12 @@
 
 All notable changes to `filament-settings` will be documented in this file.
 
+## 2.1.0 - 2025-10-08
+
+### Added
+
+-   Use Gemini CLI to generate translations for languages supported by [Laravel Lang](https://github.com/Laravel-Lang)
+
 ## 2.0.0 - 2025-10-08
 
 ### Changed
