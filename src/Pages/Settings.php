@@ -7,6 +7,7 @@ namespace Outerweb\FilamentSettings\Pages;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
+use Filament\Forms\Components\Field;
 use Filament\Notifications\Notification;
 use Filament\Pages\Concerns\CanUseDatabaseTransactions;
 use Filament\Pages\Concerns\HasUnsavedDataChangesAlert;
@@ -22,6 +23,7 @@ use Filament\Support\Facades\FilamentView;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Contracts\Support\Htmlable;
 use Outerweb\Settings\Facades\Setting;
+use Outerweb\Settings\Models\Setting as SettingModel;
 use Throwable;
 
 /**
@@ -46,6 +48,14 @@ class Settings extends Page
 
     public function mount(): void
     {
+        $this->form->components(
+            collect($this->form->getComponents(true, true))
+                ->map(function (Component|Action|ActionGroup $component): Component|Action|ActionGroup {
+                    return $this->addModelToFieldComponentsRecursively($component);
+                })
+                ->all(),
+        );
+
         $this->fillForm();
     }
 
@@ -65,6 +75,15 @@ class Settings extends Page
             $this->callHook('beforeSave');
 
             Setting::set($data);
+
+            foreach ($this->form->getFlatComponents() as $component) {
+                if (! $component instanceof Field) {
+                    continue;
+                }
+
+                $component->model($this->getModelForField($component));
+                $component->saveRelationships();
+            }
 
             $this->callHook('afterSave');
             // @codeCoverageIgnoreStart
@@ -233,5 +252,28 @@ class Settings extends Page
     protected function hasFullWidthFormActions(): bool
     {
         return false;
+    }
+
+    private function addModelToFieldComponentsRecursively(Component|Action|ActionGroup $component): Component|Action|ActionGroup
+    {
+        if ($component instanceof Field) {
+            $component->model(function (Field $component): SettingModel {
+                return $this->getModelForField($component);
+            });
+        }
+
+        return $component->childComponents(
+            collect($component->getChildComponents())
+                ->map(function (Component|Action|ActionGroup $childComponent): Action|ActionGroup|Component {
+                    return $this->addModelToFieldComponentsRecursively($childComponent);
+                })
+                ->all(),
+        );
+    }
+
+    private function getModelForField(Field $field): SettingModel
+    {
+        return Setting::model()::query()
+            ->firstOrNew(['key' => $field->getName()]);
     }
 }

@@ -2,6 +2,12 @@
 
 All notable changes to `filament-settings` will be documented in this file.
 
+## 2.2.0 - 2026-01-08
+
+### Added
+
+-   Added support for relation fields in settings page.
+
 ## 2.1.0 - 2025-10-08
 
 ### Added

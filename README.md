@@ -126,7 +126,7 @@ For example, if you want to store all settings under a specific tenant key:
             return ["{$this->getTenantKey()}.{$key}" => $item];
         })->toArray();
     }
-    
+
     /**
      * A custom function for this example
      */
